@@ -1,0 +1,86 @@
+---
+import Badge from '@/components/Badge.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import {
+  COST_MOCKUP,
+  DOCUMENT_FORMATS,
+  DOCUMENT_POINTS,
+  DOCUMENTS_SECTION,
+} from '@/data/documents';
+
+const points = [
+  { icon: 'folder', key: 'folder' },
+  { icon: 'brain', key: 'drafting' },
+  { icon: 'coin', key: 'cost' },
+] as const;
+---
+
+<section id="documentos" aria-labelledby={DOCUMENTS_SECTION.id} class="py-section lg:py-section-lg">
+  <Container class="grid items-start gap-12 lg:grid-cols-2">
+    <div class="flex flex-col gap-8">
+      <SectionHeading
+        id={DOCUMENTS_SECTION.id}
+        eyebrow={DOCUMENTS_SECTION.eyebrow}
+        title={DOCUMENTS_SECTION.title}
+        intro={DOCUMENTS_SECTION.intro}
+      />
+
+      <ul class="flex flex-wrap gap-3" aria-label="Formatos disponibles">
+        {DOCUMENT_FORMATS.map((format) => (
+          <li>
+            <Badge tone="accent" icon={format.icon}>
+              {format.label}
+            </Badge>
+          </li>
+        ))}
+      </ul>
+
+      <ul class="flex flex-col gap-4">
+        {points.map((point) => (
+          <li class="flex items-start gap-3 text-body text-muted">
+            <Icon name={point.icon} size={24} class="mt-1 shrink-0 text-emerald" />
+            {point.key === 'folder' ? (
+              <span>
+                {DOCUMENT_POINTS.folder.before}
+                <code class="font-mono text-code text-foreground">
+                  {DOCUMENT_POINTS.folder.path}
+                </code>
+                {DOCUMENT_POINTS.folder.after}
+              </span>
+            ) : (
+              <span>{DOCUMENT_POINTS[point.key]}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div aria-hidden="true" class="mx-auto w-full max-w-md">
+      <div class="rounded-card border border-border bg-panel-raised p-5 shadow-glow">
+        <div class="flex items-center gap-2 text-emerald">
+          <Icon name="coin" size={20} />
+          <span class="font-mono text-label uppercase tracking-label">{COST_MOCKUP.title}</span>
+        </div>
+        <ul class="mt-4 flex flex-col gap-3">
+          {COST_MOCKUP.rows.map((row) => (
+            <li class="flex items-center justify-between gap-4 border-b border-border pb-3 text-small">
+              <span class="text-muted">{row.label}</span>
+              <span class="font-mono text-foreground">{row.value}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-5 flex gap-3">
+          <span class="rounded-button border border-emerald bg-emerald/10 px-4 py-2 font-mono text-label text-emerald">
+            {COST_MOCKUP.confirm}
+          </span>
+          <span class="rounded-button border border-border px-4 py-2 font-mono text-label text-muted">
+            {COST_MOCKUP.cancel}
+          </span>
+        </div>
+        <p class="mt-4 font-mono text-label text-muted">{COST_MOCKUP.note}</p>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,60 @@
+---
+import Badge from '@/components/Badge.astro';
+import Card from '@/components/Card.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { MEMORY_COLUMN, SKILLS_COLUMN, SKILLS_HEADING } from '@/data/skills';
+---
+
+<section id="skills" aria-labelledby="skills-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col gap-12">
+    <SectionHeading
+      id="skills-title"
+      eyebrow={SKILLS_HEADING.eyebrow}
+      title={SKILLS_HEADING.title}
+      intro={SKILLS_HEADING.intro}
+    />
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <Card as="article" class="flex flex-col gap-6" aria-labelledby="skills-col-title">
+        <div class="flex items-center gap-3 text-emerald">
+          <Icon name={SKILLS_COLUMN.icon} size={28} />
+          <h3 id="skills-col-title" class="font-display text-title-3 font-semibold text-foreground">
+            {SKILLS_COLUMN.title}
+          </h3>
+        </div>
+        <p class="text-body text-muted">{SKILLS_COLUMN.description}</p>
+        <ul aria-label={SKILLS_COLUMN.listLabel} class="flex flex-wrap gap-2">
+          {SKILLS_COLUMN.items.map((skill) => (
+            <li>
+              <Badge>{skill}</Badge>
+            </li>
+          ))}
+        </ul>
+        <p class="flex items-start gap-2 text-small text-muted">
+          <Icon name="shield" size={20} class="mt-0.5 text-emerald" />
+          <span>{SKILLS_COLUMN.note}</span>
+        </p>
+      </Card>
+
+      <Card as="article" class="flex flex-col gap-6" aria-labelledby="memory-col-title">
+        <div class="flex items-center gap-3 text-emerald">
+          <Icon name={MEMORY_COLUMN.icon} size={28} />
+          <h3 id="memory-col-title" class="font-display text-title-3 font-semibold text-foreground">
+            {MEMORY_COLUMN.title}
+          </h3>
+        </div>
+        <p class="text-body text-muted">{MEMORY_COLUMN.description}</p>
+        <ul aria-label={MEMORY_COLUMN.propertiesLabel} class="flex flex-col gap-3">
+          {MEMORY_COLUMN.properties.map((property) => (
+            <li class="flex items-center gap-2 text-body text-foreground">
+              <Icon name="check" size={20} class="text-emerald" />
+              {property}
+            </li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+  </Container>
+</section>

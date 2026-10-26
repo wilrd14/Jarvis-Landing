@@ -1,0 +1,30 @@
+---
+interface Step {
+  title: string;
+  description?: string;
+}
+
+interface Props {
+  items: Step[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<ol class:list={['flex flex-col gap-8', className]}>
+  {items.map((item, index) => (
+    <li class="flex gap-3 sm:gap-6">
+      <span
+        aria-hidden="true"
+        class="w-9 shrink-0 font-mono text-title-2 font-bold sm:w-16 sm:text-title-1 leading-none text-emerald"
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <div class="flex min-w-0 flex-col gap-2">
+        <h3 class="font-display text-title-3 font-semibold text-foreground">{item.title}</h3>
+        {item.description && <p class="text-body text-muted">{item.description}</p>}
+      </div>
+    </li>
+  ))}
+</ol>

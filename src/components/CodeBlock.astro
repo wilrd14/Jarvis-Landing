@@ -1,0 +1,58 @@
+---
+/*
+  Atributos que lee src/scripts/copy.ts: data-codeblock (raíz), data-copy (botón),
+  data-copy-source (texto), data-copy-label (texto del botón), data-copy-status (aria-live).
+  El script escribe data-ready y data-state en la raíz.
+*/
+interface Props {
+  /** Una línea por elemento; se copian unidas con saltos de línea. */
+  lines: string[];
+  /** Texto del botón en reposo. */
+  copyLabel: string;
+  /** Texto del botón tras copiar. */
+  copiedLabel: string;
+  /** Mensaje cuando el portapapeles falla. */
+  errorLabel: string;
+  /** Descripción accesible del botón (p. ej. «Copiar comando»). */
+  buttonAriaLabel?: string;
+  class?: string;
+}
+
+const {
+  lines,
+  copyLabel,
+  copiedLabel,
+  errorLabel,
+  buttonAriaLabel,
+  class: className,
+} = Astro.props;
+---
+
+<div data-codeblock class:list={['group/code flex flex-col gap-2', className]}>
+  <div class="flex flex-col gap-3 rounded-card border border-border bg-panel p-4 shadow-glow sm:flex-row sm:items-start">
+    <pre
+      class="min-w-0 overflow-x-auto sm:flex-1 font-mono text-code text-core select-text"
+      tabindex="0"
+    ><code data-copy-source>{lines.join('\n')}</code></pre>
+    <button
+      type="button"
+      data-copy
+      data-label-copy={copyLabel}
+      data-label-copied={copiedLabel}
+      data-label-error={errorLabel}
+      aria-label={buttonAriaLabel}
+      class="hidden min-h-11 min-w-11 shrink-0 self-stretch sm:self-auto items-center justify-center rounded-button border border-emerald px-4 font-sans text-small font-medium text-emerald transition-colors hover:bg-emerald/10 active:bg-emerald/20 group-data-ready/code:inline-flex"
+    >
+      <span data-copy-label>{copyLabel}</span>
+    </button>
+  </div>
+  <p
+    data-copy-status
+    aria-live="polite"
+    class="sr-only data-[state=error]:not-sr-only data-[state=error]:text-small data-[state=error]:text-danger"
+  ></p>
+</div>
+
+<script>
+  import '@/scripts/copy';
+</script>

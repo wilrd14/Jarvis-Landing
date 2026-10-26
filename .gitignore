@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+playwright-report/
+test-results/
+.DS_Store
+npm-debug.log*

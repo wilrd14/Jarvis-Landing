@@ -1,0 +1,28 @@
+---
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { FAQ } from '@/data/faq';
+---
+
+<section id="faq" aria-labelledby="faq-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col gap-12">
+    <SectionHeading id="faq-title" eyebrow={FAQ.eyebrow} title={FAQ.title} />
+
+    <div class="flex max-w-3xl flex-col gap-4">
+      {FAQ.items.map((item) => (
+        <details class="group rounded-card border border-border bg-panel open:border-emerald">
+          <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-card p-6 font-display text-title-3 font-semibold text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald [&::-webkit-details-marker]:hidden">
+            <span>{item.question}</span>
+            <Icon
+              name="arrow-right"
+              size={20}
+              class="text-emerald transition-transform group-open:rotate-90 motion-reduce:transition-none"
+            />
+          </summary>
+          <p class="px-6 pb-6 text-body text-muted">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </Container>
+</section>

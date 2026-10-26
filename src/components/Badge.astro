@@ -1,0 +1,25 @@
+---
+import Icon from '@/components/Icon.astro';
+import type { IconName } from '@/components/icons';
+
+interface Props {
+  tone?: 'neutral' | 'accent';
+  icon?: IconName;
+  class?: string;
+}
+
+const { tone = 'neutral', icon, class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-2 rounded-pill border px-3 py-1 font-mono text-label',
+    tone === 'accent'
+      ? 'border-emerald bg-emerald/10 text-emerald'
+      : 'border-border bg-panel text-muted',
+    className,
+  ]}
+>
+  {icon && <Icon name={icon} size={16} />}
+  <slot />
+</span>

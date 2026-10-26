@@ -1,0 +1,49 @@
+---
+import Card from '@/components/Card.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Steps from '@/components/Steps.astro';
+import { MOBILE_HEADING, MOBILE_NOTICE, MOBILE_PRIVACY, MOBILE_STEPS } from '@/data/mobile';
+---
+
+<section id="movil" aria-labelledby="movil-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col gap-12">
+    <SectionHeading
+      id="movil-title"
+      eyebrow={MOBILE_HEADING.eyebrow}
+      title={MOBILE_HEADING.title}
+      intro={MOBILE_HEADING.intro}
+    />
+
+    <div class="grid gap-12 lg:grid-cols-[3fr_2fr]">
+      <Steps items={[...MOBILE_STEPS]} />
+
+      <div class="flex flex-col gap-6">
+        <Card class="flex flex-col gap-3">
+          <div class="flex items-center gap-3 text-emerald">
+            <Icon name="lock" size={24} />
+            <h3 class="font-display text-title-3 font-semibold text-foreground">
+              {MOBILE_PRIVACY.title}
+            </h3>
+          </div>
+          <p class="text-body text-muted">{MOBILE_PRIVACY.text}</p>
+        </Card>
+
+        <Card variant="featured" class="flex flex-col gap-3">
+          <div class="flex items-center gap-3 text-emerald">
+            <Icon name="bell" size={24} />
+            <h3 class="font-display text-title-3 font-semibold text-foreground">
+              {MOBILE_NOTICE.title}
+            </h3>
+          </div>
+          <ul class="flex flex-col gap-2 text-body text-muted">
+            {MOBILE_NOTICE.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </Container>
+</section>

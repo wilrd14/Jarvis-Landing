@@ -1,0 +1,27 @@
+---
+import Card from '@/components/Card.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { COST_BLOCKS, COSTS_HEADING } from '@/data/costs';
+---
+
+<section id="costes" aria-labelledby="costes-title" class="py-section lg:py-section-lg">
+  <Container>
+    <SectionHeading
+      id="costes-title"
+      eyebrow={COSTS_HEADING.eyebrow}
+      title={COSTS_HEADING.title}
+      intro={COSTS_HEADING.intro}
+    />
+    <ul class="mt-12 grid gap-6 md:grid-cols-3">
+      {COST_BLOCKS.map((block) => (
+        <Card as="li" class="flex flex-col gap-4">
+          <Icon name={block.icon} size={28} class="text-emerald" />
+          <h3 class="font-display text-title-3 font-bold text-foreground">{block.title}</h3>
+          <p class="text-body text-muted">{block.text}</p>
+        </Card>
+      ))}
+    </ul>
+  </Container>
+</section>

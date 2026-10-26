@@ -1,0 +1,30 @@
+---
+import Card from '@/components/Card.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { SECURITY_HEADING, SECURITY_ITEMS } from '@/data/security';
+---
+
+<section id="seguridad" aria-labelledby="seguridad-title" class="py-section lg:py-section-lg">
+  <Container>
+    <SectionHeading
+      id="seguridad-title"
+      eyebrow={SECURITY_HEADING.eyebrow}
+      title={SECURITY_HEADING.title}
+      intro={SECURITY_HEADING.intro}
+    />
+    <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {SECURITY_ITEMS.map((item) => (
+        <Card as="li" class="flex flex-col gap-4">
+          <Icon name={item.icon} size={28} class="text-emerald" />
+          <h3 class="font-display text-title-3 font-bold text-foreground">{item.title}</h3>
+          <p class="text-body text-muted">{item.text}</p>
+          <p class="mt-auto border-t border-border pt-4 font-mono text-code text-turquoise">
+            {item.technical}
+          </p>
+        </Card>
+      ))}
+    </ul>
+  </Container>
+</section>

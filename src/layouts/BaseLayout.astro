@@ -1,0 +1,102 @@
+---
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { SITE } from '@/data/site';
+import { NAV_ITEMS, NAV_LABELS, FOOTER_LABELS } from '@/data/nav';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${SITE.name} · Asistente de voz personal en tu PC`,
+  description = SITE.description,
+} = Astro.props;
+
+// Astro.site viene de PUBLIC_SITE_URL (o del valor provisional de astro.config.mjs)
+const siteUrl = Astro.site ?? new URL(SITE.canonicalUrl);
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL(SITE.ogImage, siteUrl).href;
+
+// Solo datos respaldados por el README: sin valoraciones ni precios.
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: SITE.name,
+  description: SITE.description,
+  operatingSystem: 'Windows',
+  inLanguage: SITE.lang,
+  url: canonical,
+  image: ogImage,
+  author: { '@type': 'Person', name: SITE.author, url: SITE.portfolioUrl },
+}).replaceAll('<', '\\u003c');
+---
+
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#030504" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={SITE.ogImageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={SITE.ogImageAlt} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="bg-emerald text-background rounded-button sr-only font-medium focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-3"
+    >
+      Saltar al contenido
+    </a>
+    <Header
+      name={SITE.name}
+      logoSrc="/logo.svg"
+      links={NAV_ITEMS}
+      githubUrl={SITE.githubUrl}
+      githubLabel={NAV_LABELS.github}
+      homeLabel={NAV_LABELS.homeAria}
+      navLabel={NAV_LABELS.navAria}
+      menuOpenLabel={NAV_LABELS.menuOpen}
+      menuCloseLabel={NAV_LABELS.menuClose}
+    />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer
+      name={SITE.name}
+      logoSrc="/logo.svg"
+      links={[
+        { label: FOOTER_LABELS.github, href: SITE.githubUrl },
+        { label: FOOTER_LABELS.portfolio, href: SITE.portfolioUrl },
+      ]}
+      navLabel={FOOTER_LABELS.navAria}
+      year={new Date().getFullYear()}
+      madeByLabel={FOOTER_LABELS.madeBy}
+      author={SITE.author}
+    />
+  </body>
+</html>

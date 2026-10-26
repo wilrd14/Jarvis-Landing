@@ -1,0 +1,57 @@
+---
+import Card from '@/components/Card.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { VOICE } from '@/data/voice';
+
+const { mockup } = VOICE;
+---
+
+<section id="voz" aria-labelledby="voz-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col gap-12">
+    <SectionHeading
+      id="voz-title"
+      eyebrow={VOICE.eyebrow}
+      title={VOICE.title}
+      intro={VOICE.intro}
+    />
+
+    <div class="grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {VOICE.points.map((point) => (
+          <Card as="li" class="flex flex-col gap-3">
+            <Icon name={point.icon} size={28} class="text-emerald" />
+            <h3 class="font-display text-title-3 font-bold text-foreground">{point.title}</h3>
+            <p class="text-small text-muted">{point.text}</p>
+          </Card>
+        ))}
+      </ul>
+
+      <!-- Maqueta decorativa: no transmite información que no esté en las tarjetas -->
+      <div
+        aria-hidden="true"
+        class="flex flex-col gap-4 rounded-card border border-border bg-panel p-6"
+      >
+        <p class="font-mono text-label uppercase tracking-label text-ghost">{mockup.caption}</p>
+        <div class="flex max-w-[85%] flex-col gap-1 self-end">
+          <span class="self-end font-mono text-label text-muted">{mockup.userLabel}</span>
+          <p class="rounded-card rounded-br-none border border-border bg-panel-raised px-4 py-3 text-small text-foreground">
+            {mockup.userText}
+          </p>
+        </div>
+        <div class="flex max-w-[85%] flex-col gap-1 self-start">
+          <span class="font-mono text-label text-emerald">{mockup.assistantLabel}</span>
+          <div class="flex flex-col gap-3 rounded-card rounded-bl-none border border-emerald bg-emerald/10 px-4 py-3">
+            <p class="text-small text-foreground">{mockup.assistantText}</p>
+            <div class="flex h-8 items-center gap-1">
+              {[30, 60, 90, 45, 100, 70, 35, 80, 55, 25, 65, 40].map((h) => (
+                <span class="w-1 rounded-pill bg-spark" style={`height: ${h}%`} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,37 @@
+---
+import Container from '@/components/Container.astro';
+import Button from '@/components/Button.astro';
+import Badge from '@/components/Badge.astro';
+import HologramCore from '@/components/HologramCore.astro';
+import { HERO } from '@/data/hero';
+---
+
+<section id="inicio" aria-labelledby="inicio-title" class="pt-24 pb-12 lg:pt-32 lg:pb-section">
+  <Container class="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
+    <div class="order-first mx-auto w-full max-w-[170px] sm:max-w-[260px] lg:order-last lg:max-w-[520px]">
+      <HologramCore />
+    </div>
+    <div class="text-center lg:text-left">
+      <p class="font-mono text-label text-turquoise">{HERO.eyebrow}</p>
+      <h1 id="inicio-title" class="mt-3 font-display text-title-1 font-bold text-foreground">
+        {HERO.title}
+      </h1>
+      <p class="mx-auto mt-3 max-w-xl text-body text-muted lg:mx-0">{HERO.tagline}</p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+        <Button href={HERO.primaryCta.href} external icon="github" iconPosition="start">
+          {HERO.primaryCta.label}
+        </Button>
+        <Button variant="secondary" href={HERO.secondaryCta.href}>
+          {HERO.secondaryCta.label}
+        </Button>
+      </div>
+      <ul class="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
+        {HERO.tags.map((tag) => (
+          <li>
+            <Badge>{tag}</Badge>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Container>
+</section>

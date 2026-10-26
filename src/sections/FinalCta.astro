@@ -1,0 +1,21 @@
+---
+import Button from '@/components/Button.astro';
+import Container from '@/components/Container.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { FINAL_CTA } from '@/data/author';
+import { SITE } from '@/data/site';
+---
+
+<section id="cta" aria-labelledby="cta-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col items-center gap-8 text-center">
+    <SectionHeading id="cta-title" title={FINAL_CTA.title} intro={FINAL_CTA.text} align="center" />
+    <div class="flex flex-col items-center gap-4 sm:flex-row">
+      <Button href={SITE.githubUrl} external icon="github" iconPosition="start">
+        {FINAL_CTA.githubLabel}
+      </Button>
+      <Button variant="secondary" href={FINAL_CTA.installHref}>
+        {FINAL_CTA.installLabel}
+      </Button>
+    </div>
+  </Container>
+</section>

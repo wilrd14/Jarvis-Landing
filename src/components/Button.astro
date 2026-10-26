@@ -1,0 +1,55 @@
+---
+import Icon from '@/components/Icon.astro';
+import type { IconName } from '@/components/icons';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'link';
+  /** Si se indica, se renderiza un `<a>`; si no, un `<button>`. */
+  href?: string;
+  /** Enlace a otro sitio: añade `target` y `rel="noopener noreferrer"`. */
+  external?: boolean;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
+  icon?: IconName;
+  iconPosition?: 'start' | 'end';
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  external = false,
+  type = 'button',
+  disabled = false,
+  icon,
+  iconPosition = 'end',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 font-sans text-small font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50';
+const variants = {
+  primary:
+    'rounded-button bg-emerald px-6 py-3 text-background hover:bg-spark active:bg-turquoise disabled:hover:bg-emerald',
+  secondary:
+    'rounded-button border border-emerald px-6 py-3 text-emerald hover:bg-emerald/10 active:bg-emerald/20',
+  link: 'rounded-button px-2 py-2 text-emerald underline underline-offset-4 hover:text-spark',
+};
+const classes = [base, variants[variant], className];
+const linkProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...linkProps} {...rest}>
+    {icon && iconPosition === 'start' && <Icon name={icon} size={20} />}
+    <slot />
+    {icon && iconPosition === 'end' && <Icon name={icon} size={20} />}
+  </a>
+) : (
+  <button type={type} disabled={disabled} class:list={classes} {...rest}>
+    {icon && iconPosition === 'start' && <Icon name={icon} size={20} />}
+    <slot />
+    {icon && iconPosition === 'end' && <Icon name={icon} size={20} />}
+  </button>
+)}

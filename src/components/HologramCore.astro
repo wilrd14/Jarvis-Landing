@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<!--
+  Decorativo: la información nunca depende de él. Sin JavaScript (o sin canvas)
+  queda visible el logo estático; hologram.ts lo oculta al activar el canvas.
+-->
+<div
+  class:list={[
+    'relative mx-auto aspect-square w-full max-w-[520px] rounded-pill shadow-hologram',
+    className,
+  ]}
+  aria-hidden="true"
+>
+  <canvas data-hologram hidden class="size-full"></canvas>
+  <img
+    data-hologram-fallback
+    src="/logo.svg"
+    alt=""
+    width="520"
+    height="520"
+    class="size-full object-contain p-12"
+  />
+</div>
+
+<script>
+  import '@/scripts/hologram';
+</script>

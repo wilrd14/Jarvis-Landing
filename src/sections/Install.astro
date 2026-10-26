@@ -1,0 +1,62 @@
+---
+import CodeBlock from '@/components/CodeBlock.astro';
+import Container from '@/components/Container.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { INSTALL } from '@/data/install';
+
+const { copy } = INSTALL;
+---
+
+<section id="instalacion" aria-labelledby="instalacion-title" class="py-section lg:py-section-lg">
+  <Container class="flex flex-col gap-12">
+    <SectionHeading
+      id="instalacion-title"
+      eyebrow={INSTALL.eyebrow}
+      title={INSTALL.title}
+      intro={INSTALL.intro}
+    />
+
+    <ol class="flex max-w-3xl flex-col gap-10">
+      {INSTALL.steps.map((step, index) => (
+        <li class="flex gap-3 sm:gap-6">
+          <span
+            aria-hidden="true"
+            class="w-9 shrink-0 font-mono text-title-2 font-bold sm:w-16 sm:text-title-1 leading-none text-emerald"
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div class="flex min-w-0 flex-1 flex-col gap-3">
+            <h3 class="font-display text-title-3 font-semibold text-foreground">{step.title}</h3>
+            <p class="text-body text-muted wrap-anywhere">{step.description}</p>
+            {step.commands && (
+              <CodeBlock
+                lines={step.commands}
+                copyLabel={copy.copyLabel}
+                copiedLabel={copy.copiedLabel}
+                errorLabel={copy.errorLabel}
+                buttonAriaLabel={copy.buttonAriaLabel}
+              />
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="flex max-w-3xl flex-col gap-4">
+      <div class="rounded-card border border-border bg-panel p-6">
+        <p class="font-display text-title-3 font-semibold text-foreground">{INSTALL.note.title}</p>
+        <p class="mt-2 text-body text-muted">{INSTALL.note.text}</p>
+      </div>
+      <p class="text-body text-muted">{INSTALL.autostart.text}</p>
+      {INSTALL.autostart.commands.map((command) => (
+        <CodeBlock
+          lines={[command]}
+          copyLabel={copy.copyLabel}
+          copiedLabel={copy.copiedLabel}
+          errorLabel={copy.errorLabel}
+          buttonAriaLabel={copy.buttonAriaLabel}
+        />
+      ))}
+    </div>
+  </Container>
+</section>

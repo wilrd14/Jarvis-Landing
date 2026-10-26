@@ -1,0 +1,115 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/space-grotesk/wght.css';
+@import '@fontsource-variable/geist/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+/*
+ * Tokens del Brief §5. Se vacía la paleta por defecto de Tailwind para que
+ * solo existan los colores del proyecto (nada de valores sueltos).
+ * Escala de espaciado: la base de 4 px (--spacing) da 4/8/12/16/24/32/48/64/96/128 px
+ * con las utilidades 1/2/3/4/6/8/12/16/24/32.
+ */
+@theme {
+  --color-*: initial;
+  --color-background: #030504;
+  --color-panel: #06100d;
+  --color-panel-raised: #0b1a15;
+  --color-border: #143229;
+  --color-foreground: #eafff5;
+  --color-muted: #9fc4b6;
+  --color-core: #e8fff6;
+  --color-emerald: #1fe0a0;
+  --color-turquoise: #14c4c4;
+  --color-spark: #2bffb8;
+  --color-ghost: #2e8878;
+  --color-danger: #ff6b6b;
+
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  /* Tipografía (móvil a escritorio con clamp) */
+  --text-title-1: clamp(2.5rem, 1.7rem + 3.4vw, 4.5rem);
+  --text-title-1--line-height: 1.05;
+  --text-title-2: clamp(1.875rem, 1.45rem + 1.8vw, 2.75rem);
+  --text-title-2--line-height: 1.15;
+  --text-title-3: clamp(1.25rem, 1.2rem + 0.2vw, 1.375rem);
+  --text-title-3--line-height: 1.3;
+  --text-body: clamp(1rem, 0.96rem + 0.15vw, 1.125rem);
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+  --text-code: 0.875rem;
+  --text-code--line-height: 1.6;
+  --tracking-label: 0.12em;
+
+  /* Radios */
+  --radius-button: 8px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+
+  /* Relieve por brillo, sin sombras negras */
+  --shadow-glow: 0 0 32px rgb(31 224 160 / 0.15);
+  --shadow-hologram: 0 0 64px rgb(43 255 184 / 0.25);
+
+  /* Maquetación: contenedor, gutters y separación entre secciones */
+  --container-page: 1200px;
+  --spacing-gutter: 16px;
+  --spacing-gutter-md: 24px;
+  --spacing-gutter-lg: 32px;
+  --spacing-section: 96px;
+  --spacing-section-lg: 128px;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  /* Evita que la cabecera fija tape el título al saltar a un ancla */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-spark);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-emerald);
+    color: var(--color-background);
+  }
+}
+
+/* Sin animaciones ni transiciones para quien lo pide (Brief §7 y §9) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

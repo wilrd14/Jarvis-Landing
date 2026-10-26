@@ -1,0 +1,108 @@
+---
+import Button from '@/components/Button.astro';
+import Container from '@/components/Container.astro';
+import Icon from '@/components/Icon.astro';
+
+interface NavLink {
+  label: string;
+  href: string;
+  /** Ids de sección que activan el enlace; si falta, solo el de su `href`. */
+  matches?: readonly string[];
+}
+
+interface Props {
+  name: string;
+  logoSrc: string;
+  links: readonly NavLink[];
+  githubUrl: string;
+  githubLabel: string;
+  homeLabel: string;
+  navLabel: string;
+  menuOpenLabel: string;
+  menuCloseLabel: string;
+}
+
+const {
+  name,
+  logoSrc,
+  links,
+  githubUrl,
+  githubLabel,
+  homeLabel,
+  navLabel,
+  menuOpenLabel,
+  menuCloseLabel,
+} = Astro.props;
+
+const linkClass =
+  'rounded-button inline-flex min-h-11 items-center px-3 text-small font-medium text-muted transition-colors hover:text-foreground aria-[current=true]:text-emerald';
+---
+
+<!--
+  Atributos que lee src/scripts/nav.ts: data-nav-toggle (botón), data-nav-panel (panel),
+  data-nav-link (+ data-nav-sections, ids separados por espacio). El script escribe
+  data-nav="open|closed" y data-scrolled en este <header>. Sin JS no hay data-nav:
+  el botón queda oculto y los enlaces se ven como una fila que se ajusta al ancho.
+-->
+<header class="group/header border-border fixed inset-x-0 top-0 z-40 border-b border-transparent transition-colors data-[scrolled]:bg-background/80 data-[scrolled]:border-border data-[scrolled]:backdrop-blur-md data-[nav=open]:bg-background/95 max-md:data-[nav=open]:backdrop-blur-md">
+  <Container class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-2">
+    <a
+      href="#inicio"
+      aria-label={homeLabel}
+      class="rounded-button font-display text-title-3 text-foreground inline-flex min-h-11 items-center gap-3 font-bold"
+    >
+      <img src={logoSrc} alt="" width="32" height="32" class="rounded-pill size-8" />
+      <span>{name}</span>
+    </a>
+
+    <button
+      type="button"
+      data-nav-toggle
+      aria-expanded="false"
+      aria-controls="nav-panel"
+      aria-label={menuOpenLabel}
+      data-label-open={menuOpenLabel}
+      data-label-close={menuCloseLabel}
+      class="group/btn rounded-button border-border text-foreground hover:border-emerald hidden min-h-11 min-w-11 items-center justify-center border group-data-[nav]/header:max-md:inline-flex"
+    >
+      <Icon name="menu" class="group-aria-expanded/btn:hidden" />
+      <Icon name="close" class="hidden group-aria-expanded/btn:block" />
+    </button>
+
+    <nav
+      id="nav-panel"
+      data-nav-panel
+      aria-label={navLabel}
+      class="flex w-full flex-wrap items-center gap-x-1 gap-y-1 md:w-auto md:flex-nowrap md:gap-x-2 group-data-[nav]/header:max-md:flex-col group-data-[nav]/header:max-md:items-stretch group-data-[nav=closed]/header:max-md:hidden group-data-[nav]/header:max-md:pb-4"
+    >
+      <ul class="flex flex-wrap items-center gap-1 max-md:w-full md:flex-nowrap md:gap-2 group-data-[nav]/header:max-md:flex-col group-data-[nav]/header:max-md:items-stretch">
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-nav-link
+              data-nav-sections={(link.matches ?? [link.href.slice(1)]).join(' ')}
+              class={linkClass}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <Button
+        href={githubUrl}
+        external
+        variant="secondary"
+        icon="github"
+        iconPosition="start"
+        class="max-md:mt-2 max-md:w-full md:ml-2"
+      >
+        {githubLabel}
+      </Button>
+    </nav>
+  </Container>
+</header>
+
+<script>
+  import '@/scripts/nav';
+</script>
