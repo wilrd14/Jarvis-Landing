@@ -56,6 +56,8 @@ Tablero de trabajo para subagentes. El orquestador (Claude Code) asigna y revisa
 | T-023 | Pruebas unitarias del contenido de src/data | qa-tester | T-015 | Aprobada |
 | T-024 | FAQ: aplicar las respuestas confirmadas por el usuario | frontend-dev | T-014 | Aprobada |
 | T-025 | FAQ: suavizar afirmaciones que el README no respalda (RNF-10) | frontend-dev | T-024 | Aprobada |
+| T-026 | Dominio definitivo jarvis.wilrd14.dev como URL por defecto | frontend-dev | T-020 | Aprobada |
+| T-027 | Instalación: aplicar los pasos y requisitos del README de Jarvis | frontend-dev | T-014 | Aprobada |
 
 ---
 
@@ -703,6 +705,59 @@ Tablero de trabajo para subagentes. El orquestador (Claude Code) asigna y revisa
   Revisión · 2026-10-26 · Aprobada (intento 1)
   Verificado: `npm run lint` OK · `npm run check` 0 errores · `npm run test` 70/70 · `npm run build` OK · `npx playwright test --workers=2`: 360 pasan, 4 omitidas (WebKit), 0 fallos · `faq.ts` leído: sin «investigaciones» ni «prefiera»; 7 preguntas.
   Criterios: 3/3 cumplidos. Corrección trivial del orquestador: `prettier --write src/data/faq.ts`.
+- **Intentos de revisión:** 1
+
+### T-026 · Dominio definitivo jarvis.wilrd14.dev como URL por defecto
+- **Estado:** Aprobada
+- **Agente:** frontend-dev
+- **Depende de:** T-020
+- **Prioridad:** Alta
+- **Requisitos que cubre:** RF-13, RNF-07
+- **Origen:** el usuario decidió el 2026-10-26 (Q-03) publicar en `https://jarvis.wilrd14.dev`.
+- **Descripción:** Sustituir la URL provisional `https://jarvis-landing.example` por `https://jarvis.wilrd14.dev` como valor por defecto, de modo que canónica, `og:url`, `og:image`, sitemap y `robots.txt` salgan correctos aunque no se defina `PUBLIC_SITE_URL`. Archivos: `astro.config.mjs` (fallback de `site`; actualiza también el comentario), `src/data/site.ts` (`canonicalUrl`) y `README.md` (apartado de despliegue: la URL por defecto es la nueva y `PUBLIC_SITE_URL` solo sirve para sobreescribirla, p. ej. en previews). Ninguna ocurrencia de `jarvis-landing.example` debe quedar en `src/`, `public/`, `astro.config.mjs` ni `tests/`; si algún test asserta sobre el dominio, actualizar su literal. No toques `docs/`. No despliegues nada.
+- **Zonas permitidas:** `astro.config.mjs`, `src/data/site.ts`, `README.md`, y literales del dominio en `tests/unit/` y `tests/e2e/`
+- **Criterios de aceptación:**
+  - [ ] Tras `npm run build` sin `PUBLIC_SITE_URL`, `dist/index.html`, `dist/sitemap-0.xml`, `dist/sitemap-index.xml` y `dist/robots.txt` usan `https://jarvis.wilrd14.dev` y ninguno contiene `jarvis-landing.example`
+  - [ ] Con `PUBLIC_SITE_URL=https://ejemplo.test` el build sigue usando esa URL
+  - [ ] Lint, check, tests unitarios y e2e completos sin fallos
+- **Verificación (comandos):** `npm run lint` · `npm run check` · `npm run test` · `npm run build` · `npx playwright test --workers=2`
+- **Reporte del subagente:**
+  - Cambios: `astro.config.mjs` (fallback `https://jarvis.wilrd14.dev` y comentario), `src/data/site.ts` (`canonicalUrl`), `README.md` (apartado de despliegue). Ningún test asertaba el dominio.
+  - Verificación: lint OK; check 0 errores; test 70/70; build sin `PUBLIC_SITE_URL`: index.html, sitemap-0.xml, sitemap-index.xml y robots.txt usan el dominio nuevo y `grep jarvis-landing.example` en dist/src/public/tests/astro.config.mjs no da resultados; con `PUBLIC_SITE_URL=https://ejemplo.test` los mismos 3 archivos comprobados (index, sitemap-0, robots) usan esa URL; e2e `playwright test --workers=2`: 360 pasan, 4 omitidos, 0 fallos. Tras la prueba se reconstruyó dist con la URL por defecto.
+  - Aviso: el comentario de `src/layouts/BaseLayout.astro` (línea 18) aún dice «valor provisional»; está fuera de mis zonas. Sin afirmaciones no respaldadas por el README.
+- **Revisión del orquestador:**
+  Revisión · 2026-10-26 · Aprobada (intento 1)
+  Verificado: lint 0 errores · check 0 errores · test 70/70 · build sin `PUBLIC_SITE_URL`: `dist/index.html` (canónica y `og:image`) y `robots.txt` usan `https://jarvis.wilrd14.dev`; 0 ficheros con `jarvis-landing.example` en dist, src, public, tests y astro.config.mjs · e2e completo del subagente 360 pasan, 0 fallos.
+  Criterios: 3/3 cumplidos. Corrección trivial del orquestador: comentario de `BaseLayout.astro:18` («valor por defecto» en vez de «provisional»).
+- **Intentos de revisión:** 1
+
+### T-027 · Instalación: aplicar los pasos y requisitos del README de Jarvis
+- **Estado:** Aprobada
+- **Agente:** frontend-dev
+- **Depende de:** T-014
+- **Prioridad:** Media
+- **Requisitos que cubre:** RF-10, RNF-10
+- **Origen:** el usuario añadió el 2026-10-26 la instalación al README de Jarvis (commit `ec5f95f`), que cierra la duda del paso 1.
+- **Descripción:** Actualizar la sección Instalación para que coincida con el apartado «Instalación en Windows» de `C:/Users/willi/Code/Jarvis/README.md` (solo lectura; léelo entero antes de escribir). Cambios: (1) Nuevo paso 1 «Clona el repositorio e instala las dependencias» con los comandos `git clone https://github.com/wilrd14/Jarvis.git`, `cd Jarvis` y `npm install` (sustituye al actual «Instala las dependencias»). (2) El paso «Compila y crea el acceso directo» (`npm run app:install`) añade que tarda unos minutos la primera vez y que al terminar aparece «Jarvis» en el Escritorio y en el menú Inicio. (3) Mantén el paso de pegar la API key y añade un paso final «Permite el micrófono cuando el navegador lo pida y empieza a hablar». (4) Añade una lista de requisitos antes de los pasos: Windows 10/11 con Microsoft Edge o Google Chrome (Edge viene con Windows); Node.js 20 o superior (LTS) y Git; una API key de OpenRouter con algo de saldo; un micrófono. Si hace falta un campo nuevo en `src/data/install.ts` (p. ej. `requirements`), tipado, y renderizarlo en `Install.astro` con los componentes existentes y solo tokens. Mantén la nota «Solo para Windows» y el arranque opcional con Windows. Comprueba que no haya scroll horizontal a 320 px (usa `wrap-anywhere` si hace falta) y que cada comando conserve su botón «Copiar» (si los tres comandos del paso 1 van en un solo bloque, que se copien juntos o uno por bloque, a tu criterio). Actualiza los literales y recuentos de pasos en `tests/unit/` y `tests/e2e/` que cambien. No toques `docs/`. No despliegues ni hagas commit.
+- **Zonas permitidas:** `src/data/install.ts`, `src/sections/Install.astro`, y literales/recuentos en `tests/unit/` y `tests/e2e/`
+- **Criterios de aceptación:**
+  - [x] El paso 1 muestra `git clone https://github.com/wilrd14/Jarvis.git`, `cd Jarvis` y `npm install`, con botón «Copiar» funcional
+  - [x] Los requisitos y los 4 pasos coinciden con el README de Jarvis, sin afirmaciones nuevas
+  - [x] Sin scroll horizontal de 320 a 1440 px; foco y teclado intactos
+  - [x] Sin «código abierto» ni precios; lint, check, tests unitarios y e2e completos sin fallos
+- **Verificación (comandos):** `npm run lint` · `npm run check` · `npm run test` · `npm run build` · `npx playwright test --workers=2`
+- **Reporte del subagente:**
+  - Archivos: `src/data/install.ts` (campo nuevo `requirements`, 4 pasos), `src/sections/Install.astro` (tarjeta de requisitos), `tests/unit/data/content.test.ts`, `tests/e2e/copy.spec.ts`, `tests/e2e/content.spec.ts`.
+  - Paso 1: un solo bloque con los 3 comandos (git clone, cd Jarvis, npm install) que se copian juntos con un botón. Paso 2 con «unos minutos» y Escritorio/menú Inicio; paso 3 API key + Ajustes; paso 4 micrófono. Nota «Solo para Windows» y autoarranque intactos.
+  - Verificación: lint 0 errores; check 0/0/0; test 70 pasan; build OK; playwright --workers=2: 360 pasan, 4 omitidos, 0 fallos (incluye scroll horizontal 320-1440 y a11y).
+  - Afirmaciones no respaldadas por el README: ninguna (requisitos y pasos tomados del apartado «Instalación en Windows»). El README tiene un 5.º paso separado (abrir/Ajustes); lo fusioné con el de la API key para quedar en 4 pasos como pidió la tarea.
+- **Revisión del orquestador:**
+  Revisión · 2026-10-26 · Aprobada (intento 1)
+  Verificado: lint 0 errores · check 0 errores · test 70/70 · build OK · `npx playwright test --workers=2` completo: 360 pasan, 4 omitidas (WebKit), 0 fallos (incluye scroll horizontal 320-1440 px, axe y copiado). `install.ts` leído y contrastado con «Instalación en Windows» del README de Jarvis (requisitos, `git clone`, `app:install`, API key, micrófono, autoarranque).
+  Criterios: 4/4 cumplidos. Corrección trivial del orquestador: `prettier --write` en `install.ts`, `Install.astro` y `content.test.ts`.
+  Hallazgos:
+  1. El README de Jarvis tiene 5 pasos y la landing 4: «abrir Jarvis y entrar en Ajustes» se fusionó con el de la API key. Aceptado, el contenido es equivalente.
+  2. Los tres comandos del paso 1 se copian juntos con un solo botón.
 - **Intentos de revisión:** 1
 
 ### T-019 · Imagen social, iconos, robots, sitemap y datos estructurados

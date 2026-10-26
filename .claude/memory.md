@@ -7,14 +7,15 @@ Memoria viva mantenida por el orquestador. Debe seguir siendo corta (menos de ~1
 - **Carpeta:** C:/Users/willi/Code/Jarvis-Landing
 - **Arquitectura:** sitio estático con Astro, organizado por secciones y con contenido tipado separado
 - **Stack:** Astro + TypeScript (strict) + Tailwind CSS 4, Vitest, Playwright + axe; despliegue estático (Vercel o Cloudflare Pages, por decidir)
-- **GitHub:** no (por ahora)
+- **GitHub:** https://github.com/wilrd14/Jarvis-Landing.git (rama `main`; subido el 2026-10-26, licencia GPL-3.0 creada en GitHub)
 - **Creado:** 2026-10-21
 
 ## Estado actual
 - **Fase:** 2 — MVP (contenido de secciones)
-- **Última tarea aprobada:** T-021 (2026-10-26). Todas las tareas T-001 a T-024 aprobadas; código listo, publicación pendiente del usuario.
+- **Última tarea aprobada:** T-027 (2026-10-26). Todas las tareas T-001 a T-027 aprobadas; T-027 desplegada el 2026-10-26 (jarvis.wilrd14.dev al día con el código; GitHub atrasado a propósito).
+- **Desplegado (2026-10-26, a petición del usuario):** https://jarvis.wilrd14.dev en Cloudflare Pages, proyecto `jarvis-landing` (subdominio `jarvis-landing-f6f.pages.dev`), subida directa de `dist/` con `npx wrangler pages deploy dist --project-name jarvis-landing --branch main` (wrangler está autenticado; `cf pages deploy` no sirve: «Legacy Pages not supported»). CNAME `jarvis` → `jarvis-landing-f6f.pages.dev` (proxied) creado con `cf dns records create`. Cada cambio exige `npm run build` + deploy. No tocar el proyecto `wtech-store` ni otros registros DNS.
 - **En curso:** ninguna
-- **Antes de publicar (veredicto T-021 «no listo»):** definir `PUBLIC_SITE_URL` en Cloudflare Pages (Q-03); repo de Jarvis público (Q-01); decidir si «investigaciones», «OpenRouter = API key» y «la que prefiera» (FAQ) se añaden al README de Jarvis o se suavizan (RNF-10); verificar fuentes en Safari/iPhone real; paso 1 de instalación cuando esté en el README. Lighthouse móvil: 96-99 rend., 100 resto, TBT máx. 199 ms. Cabeceras en `public/_headers` (Cloudflare Pages); los hashes de la CSP se generan en cada `npm run build`: si se añaden scripts inline o recursos externos, revisar la CSP.
+- **Pendientes de publicación resueltos:** dominio (T-026), repo de Jarvis público, FAQ suavizado (T-025), fuentes OK en iPhone e instalación alineada con el README de Jarvis (T-027, desplegada). Lighthouse móvil: 96-99 rend., 100 resto, TBT máx. 199 ms. Cabeceras en `public/_headers` (Cloudflare Pages); los hashes de la CSP se generan en cada `npm run build`: si se añaden scripts inline o recursos externos, revisar la CSP.
 - **Decisión pendiente (baja):** RF-11 del PRD dice «misma pestaña» en los enlaces del pie, pero el código usa `target="_blank"`. Decidir si se ajusta el PRD o el código.
 
 ## Comandos del proyecto
@@ -55,7 +56,8 @@ Aún no existen (los crea T-001). Previstos:
 - Jarvis es un asistente de voz en español para Windows (Next.js 16, Electron, OpenRouter). El autor es Williams Villavizar (`https://wilrd14.dev`); repositorio: `https://github.com/wilrd14/Jarvis`.
 
 ## Problemas conocidos
-- Riesgo sin confirmar: en el WebKit de Playwright (Windows) las tres fuentes variables se dibujan en peso 300 (ignoran el eje `wght`, también con `font-variation-settings`); en Chromium y Firefox salen bien. Probablemente sea una limitación de esa compilación y no de Safari, pero no está verificado en un Safari/iPhone real: comprobarlo antes de publicar. Plan B: fuentes estáticas de Fontsource (más KB).
+- Resuelto (2026-10-26): las fuentes variables se ven bien en Safari de un iPhone real (el peso 300 era solo una limitación del WebKit de Playwright en Windows). No hace falta el plan B de fuentes estáticas.
+- **Regla de despliegue (decidida por el usuario, 2026-10-26):** tras aprobar cualquier cambio que afecte al sitio hay que ejecutar `npm run build` y luego `npx wrangler pages deploy dist --project-name jarvis-landing --branch main` para que https://jarvis.wilrd14.dev se actualice. Solo cuando el usuario lo pida expresamente. Lo relacionado con GitHub se queda como está: no hacer commit ni push sin que lo pida.
 - Al editar `docs/PROJECT-TASKS.md` con scripts, acotar cada bloque por su cabecera `### T-0XX` y comprobar después el estado de TODOS los bloques (un script marcó por error T-016 a T-018 como aprobadas y hubo que revertirlo).
 - Sin capturas ni vídeo de Jarvis: se usan maquetas HTML/CSS (PRD Q-02).
 
@@ -63,7 +65,7 @@ Aún no existen (los crea T-001). Previstos:
 - FAQ (T-014), respuestas del usuario del 2026-10-26: sin internet funcionan solo las acciones locales (abrir apps, etc.); con internet hace investigaciones; cada persona usa su propia API key de OpenRouter (o la que quiera); OpenRouter = una API key que da acceso a múltiples modelos de IA; por ahora solo Windows; la instalación la añadirá él más tarde al README de Jarvis (hasta entonces el paso 1 no se puede afirmar). Datos a OpenRouter: el usuario confirmó (2026-10-26) usar solo lo que dice el README («Todo pasa por OpenRouter y se paga por uso. Las órdenes locales no cuestan nada»); no afirmar qué datos concretos viajan ni que algo se procese en local salvo las órdenes instantáneas.
 - (Resuelta 2026-10-26) Q-01: el repo de Jarvis es público. Eso no implica licencia: no escribir «código abierto»/«open source» salvo que haya LICENSE en el repo de Jarvis.
 - Q-02 ¿Hay capturas o vídeo de Jarvis?
-- Q-03 ¿Dominio previsto para la landing?
+- (Resuelta 2026-10-26) Q-03: dominio de la landing = `jarvis.wilrd14.dev` (subdominio de `wilrd14.dev`, del usuario). T-026 lo fija como URL por defecto; falta configurar DNS/dominio personalizado en Cloudflare Pages (lo hace el usuario o se pide expresamente).
 - Q-04 ¿Analítica respetuosa con la privacidad?
 - Q-05 ¿Versión en inglés más adelante?
 - (Resuelta 2026-10-26) Q-06: hosting = Cloudflare Pages. T-020 desbloqueada (cabeceras en `_headers`, CSP con hashes de scripts inline).

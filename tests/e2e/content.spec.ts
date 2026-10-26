@@ -174,8 +174,12 @@ test('RF-09 Costes: las cinco ideas y ningún precio inventado', async ({ page }
 
 test('RF-10 Instalación: pasos, comandos y atajo del README', async ({ page }) => {
   const s = page.locator('#instalacion');
+  await expect(s).toContainText('git clone https://github.com/wilrd14/Jarvis.git');
   await expect(s).toContainText('npm install');
   await expect(s).toContainText('npm run app:install');
+  await expect(s).toContainText('Node.js 20 o superior');
+  await expect(s).toContainText('Permite el micrófono');
+  await expect(s.locator('ol > li')).toHaveCount(4);
   await expect(s).toContainText('Ctrl+Alt+J');
   await expect(s).toContainText('API key de OpenRouter');
   await expect(s).toContainText('Ajustes');

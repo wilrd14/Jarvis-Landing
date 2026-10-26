@@ -6,8 +6,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// URL provisional: se sobreescribe con PUBLIC_SITE_URL al desplegar.
-const site = process.env.PUBLIC_SITE_URL ?? 'https://jarvis-landing.example';
+// URL definitiva por defecto; PUBLIC_SITE_URL permite sobreescribirla (p. ej. en previews).
+const site = process.env.PUBLIC_SITE_URL ?? 'https://jarvis.wilrd14.dev';
 
 /** Añade a dist/robots.txt la línea Sitemap con la URL real (robots.txt exige URL absoluta). */
 const robotsSitemap = {

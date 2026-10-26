@@ -29,7 +29,7 @@ export const SITE: SiteConfig = {
   author: 'Williams Villavizar',
   githubUrl: 'https://github.com/wilrd14/Jarvis',
   portfolioUrl: 'https://wilrd14.dev',
-  canonicalUrl: 'https://jarvis-landing.example',
+  canonicalUrl: 'https://jarvis.wilrd14.dev',
   ogImage: '/og-image.png',
   ogImageAlt: 'Logotipo de Jarvis con su nombre y eslogan: asistente de voz personal para tu PC.',
 };

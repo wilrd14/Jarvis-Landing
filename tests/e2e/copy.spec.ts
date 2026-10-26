@@ -42,7 +42,9 @@ test('copia el comando, anuncia «Copiado» y vuelve a «Copiar»', async ({ pag
   await expect(button).toContainText('Copiado');
   await expect(b.locator('[data-copy-status]')).toHaveText('Copiado');
   await expect(b.locator('[data-copy-status]')).toHaveAttribute('aria-live', 'polite');
-  expect(await copied(page)).toEqual(['npm install']);
+  expect(await copied(page)).toEqual([
+    'git clone https://github.com/wilrd14/Jarvis.git\ncd Jarvis\nnpm install',
+  ]);
   await expect(button).not.toContainText('Copiado', { timeout: 4500 });
   await expect(button).toContainText('Copiar');
 });
@@ -85,7 +87,9 @@ test('con el portapapeles denegado muestra el error y deja el texto seleccionado
   await expect(status).toHaveText(ERROR_TEXT);
   await expect(status).toBeVisible();
   await expect(button).not.toContainText('Copiado');
-  expect(await page.evaluate(() => window.getSelection()?.toString().trim())).toBe('npm install');
+  const selected = await page.evaluate(() => window.getSelection()?.toString() ?? '');
+  expect(selected).toContain('git clone https://github.com/wilrd14/Jarvis.git');
+  expect(selected).toContain('npm install');
 });
 
 test('sin la API de portapapeles también muestra el error', async ({ page }) => {

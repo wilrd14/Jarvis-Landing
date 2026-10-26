@@ -82,9 +82,9 @@ El hosting elegido es Cloudflare Pages. Esta guía no despliega nada por sí sol
    de la carpeta `dist/` tras `npm run build`).
 2. Configuración de build: comando `npm run build`, directorio de salida `dist`, variable
    `NODE_VERSION` = `22`.
-3. Define `PUBLIC_SITE_URL` con la URL final (por ejemplo `https://tu-dominio`). Fija la URL
-   canónica, el sitemap, `robots.txt` y las metaetiquetas sociales. Si no se define se usa una
-   URL provisional (`https://jarvis-landing.example`).
+3. La URL por defecto es `https://jarvis.wilrd14.dev` (canónica, sitemap, `robots.txt` y
+   metaetiquetas sociales). `PUBLIC_SITE_URL` solo sirve para sobreescribirla, por ejemplo en
+   previews (`https://ejemplo.test`).
 
 ### Cabeceras de seguridad
 

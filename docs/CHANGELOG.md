@@ -39,6 +39,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). C
 - Configuración de despliegue para Cloudflare Pages: `public/_headers` con CSP (los hashes SHA-256 de los 3 scripts inline se calculan en cada build mediante la integración `csp-hashes` de `astro.config.mjs`), `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`, `X-Frame-Options` y caché inmutable para `/_astro/*`; `README.md` del proyecto con instalación, scripts y despliegue (T-020, frontend-dev, 2026-10-26)
 
 ### Cambiado
+- Sección Instalación alineada con el README de Jarvis: lista de requisitos (Windows 10/11 con Edge o Chrome, Node.js 20+ y Git, API key de OpenRouter con saldo, micrófono), paso 1 con `git clone`, `cd Jarvis` y `npm install` (se copian juntos), aviso de que la primera compilación tarda unos minutos y paso final para permitir el micrófono (T-027, frontend-dev, 2026-10-26)
+- La URL por defecto del sitio pasa a `https://jarvis.wilrd14.dev`: canónica, `og:url`, `og:image`, sitemap y `robots.txt` salen con el dominio definitivo sin definir `PUBLIC_SITE_URL` (T-026, frontend-dev, 2026-10-26)
 - FAQ: las respuestas sobre internet (las respuestas y la voz requieren conexión; las órdenes instantáneas se resuelven en el PC sin IA), Mac/Linux (por ahora solo Windows) y OpenRouter (servicio de pago por uso que exige tu propia API key) se ajustan a lo que respalda el README de Jarvis (T-024 y T-025, frontend-dev, 2026-10-26)
 - `CodeBlock`: por debajo de 640 px el botón «Copiar» pasa bajo el comando a ancho completo; el número de los pasos es más compacto en móvil (`Steps` e Instalación) (T-022, frontend-dev, 2026-10-21)
 ### Corregido

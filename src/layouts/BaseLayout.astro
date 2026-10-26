@@ -15,7 +15,7 @@ const {
   description = SITE.description,
 } = Astro.props;
 
-// Astro.site viene de PUBLIC_SITE_URL (o del valor provisional de astro.config.mjs)
+// Astro.site viene de PUBLIC_SITE_URL (o del valor por defecto de astro.config.mjs)
 const siteUrl = Astro.site ?? new URL(SITE.canonicalUrl);
 const canonical = new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(SITE.ogImage, siteUrl).href;

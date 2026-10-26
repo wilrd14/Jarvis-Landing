@@ -212,8 +212,10 @@ describe('install.ts', () => {
     ...INSTALL.steps.flatMap((s) => s.commands ?? []),
     ...INSTALL.autostart.commands,
   ];
-  it('contiene exactamente los 4 comandos del README', () => {
+  it('contiene exactamente los 6 comandos del README', () => {
     expect(commands).toEqual([
+      'git clone https://github.com/wilrd14/Jarvis.git',
+      'cd Jarvis',
       'npm install',
       'npm run app:install',
       'npm run app:autostart:on',
@@ -221,7 +223,8 @@ describe('install.ts', () => {
     ]);
   });
   it('tiene al menos un paso y textos no vacíos', () => {
-    expect(INSTALL.steps.length).toBeGreaterThan(0);
+    expect(INSTALL.steps).toHaveLength(4);
+    expect(INSTALL.requirements.items).toHaveLength(4);
     expectNoEmptyStrings(INSTALL);
   });
   it('los comandos no tienen espacios sobrantes ni saltos de línea', () => {
